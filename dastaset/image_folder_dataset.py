@@ -90,9 +90,13 @@ class LetterboxResize:
         # 4. 填充黑边 (fill=0)
         return F.pad(image, padding, fill=0)
 
-def get_loaders(train_data_path, val_data_path, batch_size=32):
+def get_loaders(config):
+    train_data_path = config.trianing_samples_dir
+    val_data_path = config.val_samples_dir
+    batch_size = config.batch_size
+
     # 统一尺寸变量
-    target_size = (112, 112)
+    target_size = config.target_size
 
     train_transform = transforms.Compose([
         LetterboxResize(target_size),
@@ -131,11 +135,11 @@ def get_loaders(train_data_path, val_data_path, batch_size=32):
     val_dataset.classes = train_dataset.classes
 
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True, num_workers=0, pin_memory=True
+        train_dataset, batch_size=batch_size, shuffle=True, num_workers=config.num_workers, pin_memory=True
     )
     
     val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=batch_size, shuffle=False, num_workers=0, pin_memory=True
+        val_dataset, batch_size=batch_size, shuffle=False, num_workers=config.num_workers, pin_memory=True
     )
 
     return train_loader, val_loader

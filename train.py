@@ -2,7 +2,7 @@
 Author: Garfiled
 Date: 2026-03-24 22:48:54
 LastEditors: xavier
-LastEditTime: 2026-03-28 16:30:21
+LastEditTime: 2026-03-28 23:21:46
 FilePath: /faceid/train.py
 '''
 from pyexpat import model
@@ -29,14 +29,14 @@ def train():
 
     # --- 2. 获取数据并挂载 Transform ---
     print("正在加载数据集并划分...")
-    train_loader, val_loader = get_loaders(config.trianing_samples_dir, config.val_samples_dir, batch_size=config.batch_size)
+    train_loader, val_loader = get_loaders(config)
     
     # --- 3. 构建模型与 Head ---
     model = build_model(model_name=config.arch).to(config.device)
     head = build_head(
         head_type=config.head_type,
         embedding_size=config.embedding_size,
-        class_num=config.class_num,  # 传入实际读取到的类别数
+        class_num=config.class_num,
         m=config.m,
         h=config.h,
         t_alpha=config.t_alpha,
@@ -100,9 +100,16 @@ def train():
             total_train += labels.size(0)
             correct_train += (predicted == labels).sum().item()
 
-            if batch_idx % 20 == 0:
-                print(f"Epoch [{epoch+1}/{config.epochs}] Batch [{batch_idx}/{len(train_loader)}] | Train Loss: {loss.item():.4f}")
+            print(f"Epoch [{epoch+1}/{config.epochs}] Batch [{batch_idx}/{len(train_loader)}] | Train Loss: {loss.item():.4f} | Train Acc: {100 * correct_train / total_train:.2f}%")
+            
+            # if batch_idx % 20 == 0:
 
+            # state_dict = {
+            #     'model': model.state_dict(),
+            #     'head': head.state_dict()
+            # }
+            # # save weight
+            # torch.save(state_dict, f"{weight_save_path}/adaface_epoch_{epoch+1}_batch.pth")
         train_acc = 100 * correct_train / total_train
         scheduler.step()
         
