@@ -2,11 +2,20 @@
 Author: Garfiled
 Date: 2026-03-29 12:09:28
 LastEditors: xavier
-LastEditTime: 2026-03-29 12:44:35
+LastEditTime: 2026-03-29 15:10:22
 FilePath: /faceid/utils/convert2folder_facesemore.py
 '''
 import os
 import cv2
+import numpy as np
+# 补丁：手动添加被删除的属性
+if not hasattr(np, 'bool'):
+    np.bool = bool
+if not hasattr(np, 'float'):
+    np.float = float
+if not hasattr(np, 'int'):
+    np.int = int
+
 import mxnet as mx
 from PIL import Image
 from tqdm import tqdm
