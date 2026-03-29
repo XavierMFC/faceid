@@ -2,12 +2,13 @@
 Author: Garfiled
 Date: 2026-03-29 12:09:28
 LastEditors: xavier
-LastEditTime: 2026-03-29 12:09:40
+LastEditTime: 2026-03-29 12:44:35
 FilePath: /faceid/utils/convert2folder_facesemore.py
 '''
 import os
 import cv2
 import mxnet as mx
+from PIL import Image
 from tqdm import tqdm
 
 # --- 配置路径 ---
@@ -44,9 +45,10 @@ for i in tqdm(keys):
     # 保存图片
     img_name = f"{i}.jpg"
     save_path = os.path.join(target_dir, img_name)
-    
+    Image.fromarray(img).save(save_path)
+
     # mxnet 出来的默认是 RGB，opencv 保存需要 BGR
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-    cv2.imwrite(save_path, img)
+    # img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+    # cv2.imwrite(save_path, img)
 
 print("转换完成！")
