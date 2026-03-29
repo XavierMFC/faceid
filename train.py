@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 from datetime import datetime
-# 确保路径正确，引入刚才写好的获取数据的函数
+
 from dastaset.image_folder_dataset import get_loaders
 from head import build_head
 from net import build_model

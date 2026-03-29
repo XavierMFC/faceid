@@ -2,7 +2,7 @@
 Author: Garfiled
 Date: 2026-03-28 15:11:13
 LastEditors: xavier
-LastEditTime: 2026-03-28 23:20:46
+LastEditTime: 2026-03-29 11:29:04
 FilePath: /faceid/config.py
 '''
 import torch
@@ -10,7 +10,7 @@ import torch
 
 arch = "ir_18"
 head_type = "adaface"
-class_num = 10000
+class_num = 90000
 embedding_size = 512
 m = 0.4
 h = 0.33

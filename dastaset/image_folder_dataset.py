@@ -94,8 +94,6 @@ def get_loaders(config):
     train_data_path = config.trianing_samples_dir
     val_data_path = config.val_samples_dir
     batch_size = config.batch_size
-
-    # 统一尺寸变量
     target_size = config.target_size
 
     train_transform = transforms.Compose([
@@ -135,11 +133,19 @@ def get_loaders(config):
     val_dataset.classes = train_dataset.classes
 
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True, num_workers=config.num_workers, pin_memory=True
+        train_dataset, 
+        batch_size=batch_size, 
+        shuffle=True, 
+        num_workers=config.num_workers, 
+        pin_memory=True
     )
     
     val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=batch_size, shuffle=False, num_workers=config.num_workers, pin_memory=True
+        val_dataset, 
+        batch_size=batch_size, 
+        shuffle=False, 
+        num_workers=config.num_workers, 
+        pin_memory=True
     )
 
     return train_loader, val_loader
