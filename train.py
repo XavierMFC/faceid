@@ -2,7 +2,7 @@
 Author: Garfiled
 Date: 2026-03-24 22:48:54
 LastEditors: xavier
-LastEditTime: 2026-03-28 23:21:46
+LastEditTime: 2026-03-29 11:31:17
 FilePath: /faceid/train.py
 '''
 from pyexpat import model
@@ -27,11 +27,9 @@ def train():
     weight_save_path = f"{config.root_dir}/exp/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
     os.makedirs(weight_save_path, exist_ok=True)
 
-    # --- 2. 获取数据并挂载 Transform ---
     print("正在加载数据集并划分...")
     train_loader, val_loader = get_loaders(config)
     
-    # --- 3. 构建模型与 Head ---
     model = build_model(model_name=config.arch).to(config.device)
     head = build_head(
         head_type=config.head_type,
@@ -44,12 +42,9 @@ def train():
     ).to(config.device)
 
     try:
-        # 2. 加载大字典
         ckpt = torch.load(config.pretrain)
-
-        # 3. 分别注入
         model.load_state_dict(ckpt['model'])
-        head.load_state_dict(ckpt['head'])
+        head.load_state_dict(ckpt['head'], strict=False)  # head 可能因为类别数不同而无法完全加载
     except:
         print("未找到 IR18 模型检查点，将从头开始")
     
