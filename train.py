@@ -2,7 +2,7 @@
 Author: Garfiled
 Date: 2026-03-24 22:48:54
 LastEditors: xavier
-LastEditTime: 2026-03-29 11:31:17
+LastEditTime: 2026-03-29 22:33:52
 FilePath: /faceid/train.py
 '''
 from pyexpat import model
@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 from datetime import datetime
+from tqdm import tqdm
 
 from dastaset.image_folder_dataset import get_loaders
 from head import build_head
@@ -62,7 +63,7 @@ def train():
     # --- 5. 训练与测试主循环 ---
     print(f"开始训练，使用设备: {config.device}")
     
-    for epoch in range(config.epochs):
+    for epoch in tqdm(range(config.epochs)):
         if epoch == config.unfreeze_epoch:
                     print(f"\n>>> Epoch [{epoch+1}]: 达到预定条件，解冻 Backbone，开始全局微调！")
                     for param in model.parameters():
@@ -74,7 +75,7 @@ def train():
         correct_train = 0
         total_train = 0
         
-        for batch_idx, (images, labels) in enumerate(train_loader):
+        for batch_idx, (images, labels) in tqdm(enumerate(train_loader)):
             images, labels = images.to(config.device), labels.to(config.device)
 
             optimizer.zero_grad()
